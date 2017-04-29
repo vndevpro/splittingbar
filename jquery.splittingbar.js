@@ -1,14 +1,8 @@
 /**
- Version: 1.0.0
+ Version: 1.1.0
  Author: JuanOnSoftware
  Url: https://github.com/vndevpro/splittingbar
  Purpose: split a bar into two parts by different colors. All other options are configurable.
- 
- Sample HTML:
- 
-<div style="width: 100%; background-color: #AAA">
-  <div style="width: 50%; background-color: #4CAF50; text-align: center; line-height: 30px;">50%</div>
-</div> 
 */
 
 (function ($) {
@@ -17,8 +11,9 @@
         rightPartBgColor: '#4CAF50',
         leftPartBgColor: '#DDD',
         lineHeight: '20px',
-        leftNumber: 10,
-        rightNumber: 10
+        leftNumber: 0,
+        rightNumber: 0,
+        showText: ''
     };
 
     function SplittingBar($element, options) {
@@ -30,10 +25,27 @@
     SplittingBar.prototype = {
         init: function () {
             var leftPercent = this.options.leftNumber / (this.options.leftNumber + this.options.rightNumber) * 100;
+
+            var leftText = '&nbsp;';
+            if (this.options.showText === 'n') {
+                leftText = this.options.leftNumber;
+            } else if (this.options.showText === 'p') {
+                leftText = leftPercent + '%';
+            }
+
             if (this.options.leftNumber === 0 && this.options.rightNumber === 0) {
                 leftPercent = 50;
             }
-            this.$element.html('<div style="width: 100%; background-color: ' + this.options.leftPartBgColor + '"><div style="width: ' + leftPercent + '%; background-color: ' + this.options.rightPartBgColor + '; text-align: center; line-height: ' + this.options.lineHeight + ';">&nbsp;</div></div>');
+
+            this.$element.html(
+                '<div style="width: 100%; background-color: ' + this.options.leftPartBgColor + '; color:white;">' +
+                    '<div style="   width: ' + leftPercent + '%;' +
+                                '   background-color: ' + this.options.rightPartBgColor + ';' +
+                                '   text-align: center; font-weight: bold;' +
+                                '   line-height: ' + this.options.lineHeight + ';">' +
+                        leftText +
+                    '</div>' +
+                '</div>');
         }
     };
 
